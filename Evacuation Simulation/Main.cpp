@@ -1,5 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/OpenGL.hpp>
+#include <iostream>
 #include <vector>
 #include <map>
 #include <cmath>
@@ -90,7 +91,8 @@ sf::Vector2f getPositionOnGrid(double x, double y, const windowConfig& config) {
 	return sf::Vector2f(posX, posY);
 }
 
-bool selectCheck(sf::Vector2f position, std::vector<sf::Vector2f>& vec) {
+bool selectCheck(const sf::Vector2f& position, std::vector<sf::Vector2f>& vec, windowConfig cfg) {
+	sf::Vector2f pos = sf::Vector2f(position.x / cfg.gridWidth, position.y / cfg.gridHeight);//остановился тут
 	std::vector<sf::Vector2f>::const_iterator a = findInVector(vec, position);
 	if (a != vec.end()) {
 		vec.erase(a);
@@ -133,7 +135,7 @@ int main() {
 				uint32_t dy = eve.size.height;
 				uint32_t dx = eve.size.width;
 				bool needToBeChanged = false;
-				if (dy < 400) {
+				if (dy < 400) {//Ограничения на размер окна
 					dy = 400;
 					needToBeChanged = true;
 				}
@@ -153,26 +155,30 @@ int main() {
 				window.close();
 			if (eve.type == sf::Event::MouseButtonPressed)
 			{
-				if (eve.mouseButton.button == sf::Mouse::Left)
+				if (eve.mouseButton.button == sf::Mouse::Left)//активируем и деактивируем клетку
 				{
 
 					sf::Vector2f pos = getPositionOnGrid(eve.mouseButton.x, eve.mouseButton.y, config);
-					if (selectCheck(pos, selectedChecks)) {
-
-						sf::RectangleShape cell(sf::Vector2f(pos.x + config.gridWidth, pos.y - config.gridHeight)) ;
+					if (selectCheck(pos, selectedChecks, config)) { //внутри selectCheck данные заносятся в вектор
+						sf::RectangleShape cell(sf::Vector2f(config.gridWidth,  config.gridHeight)) ;
 						cell.setPosition(pos);
 						cell.setFillColor(config.selectColor);
 						
 						window.draw(cell);
 						window.display();
 					}
-					else
-					{
-						window.clear();
-						drawGrid(window, config);
+					else {
+						sf::RectangleShape cell(sf::Vector2f(config.gridWidth, config.gridHeight));//Это не "чё за тупой код?" это оптимизация
+						cell.setPosition(pos);
+						cell.setFillColor(config.backgroundColor);
+
+						window.draw(cell);
+						window.display();
 					}
 					
-					
+					for (auto a : selectedChecks) {
+						std::cout << a.x << ' ' << a.y << std::endl;
+					}
 				}
 			}
 		}

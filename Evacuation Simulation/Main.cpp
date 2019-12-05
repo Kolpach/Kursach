@@ -11,6 +11,7 @@ struct windowConfig {
 	int32_t centerY;
 	int16_t gridWidth;
 	int16_t gridHeight;
+	int16_t max_count_of_cells;
 
 	sf::Color gridColor;
 	sf::Color backgroundColor;
@@ -27,7 +28,8 @@ struct windowConfig {
 		height = sizeVector.y;
 		centerX = width / 2;
 		centerY = height / 2;
-		gridWidth = width / 60;
+		max_count_of_cells = 60;
+		gridWidth = width / max_count_of_cells;
 		gridHeight = gridWidth;
 	}
 };
@@ -66,6 +68,19 @@ void drawGrid(sf::RenderWindow& window, const windowConfig& config) {
 	window.display();
 }
 
+void drawCells(const std::vector<sf::Vector2f>& vec, sf::RenderWindow& window, const windowConfig& config) {
+	if (vec.size() != 0) {
+		sf::RectangleShape cell(sf::Vector2f(config.gridWidth, config.gridHeight));
+		for (sf::Vector2f pos : vec) {
+			cell.setPosition(sf::Vector2f(pos.x * config.gridWidth + config.centerX, pos.y * config.gridHeight + config.centerY));
+			cell.setFillColor(config.selectColor);
+			window.draw(cell);
+			std::cout << "draw: " << pos.x << ' ' << pos.y << std::endl;
+		}
+		window.display();
+	}
+}
+
 std::vector<sf::Vector2f>::const_iterator findInVector(const std::vector<sf::Vector2f>& vec, const sf::Vector2f value) {
 	for (std::vector<sf::Vector2f>::const_iterator i = vec.begin(); i != vec.end(); ++i) {
 		if (*i == value)
@@ -91,15 +106,15 @@ sf::Vector2f getPositionOnGrid(double x, double y, const windowConfig& config) {
 	return sf::Vector2f(posX, posY);
 }
 
-bool selectCheck(const sf::Vector2f& position, std::vector<sf::Vector2f>& vec, windowConfig cfg) {
-	sf::Vector2f pos = sf::Vector2f(position.x / cfg.gridWidth, position.y / cfg.gridHeight);//остановился тут
-	std::vector<sf::Vector2f>::const_iterator a = findInVector(vec, position);
+bool selectCheck(const sf::Vector2f& position, std::vector<sf::Vector2f>& vec, windowConfig cfg) {// 
+	sf::Vector2f pos = sf::Vector2f((position.x - cfg.centerX) / cfg.gridWidth, (position.y - cfg.centerY) / cfg.gridHeight);//Внутри вектора хранятся не реальные координаты, а кординаты относительно центра
+	std::vector<sf::Vector2f>::const_iterator a = findInVector(vec, pos);
 	if (a != vec.end()) {
 		vec.erase(a);
 		return false;
 	}
 	else {
-		vec.push_back(position);
+		vec.push_back(pos);
 		return true;
 	}
 }
@@ -150,6 +165,7 @@ int main() {
 				window.clear();
 				config.changeConfig(window);
 				drawGrid(window, config);
+				drawCells(selectedChecks, window, config);
 			}
 			if (eve.type == sf::Event::Closed)
 				window.close();
@@ -157,19 +173,25 @@ int main() {
 			{
 				if (eve.mouseButton.button == sf::Mouse::Left)//активируем и деактивируем клетку
 				{
-
+					//Рисует по одной клетке
 					sf::Vector2f pos = getPositionOnGrid(eve.mouseButton.x, eve.mouseButton.y, config);
 					if (selectCheck(pos, selectedChecks, config)) { //внутри selectCheck данные заносятся в вектор
 						sf::RectangleShape cell(sf::Vector2f(config.gridWidth,  config.gridHeight)) ;
-						cell.setPosition(pos);
+						cell.setPosition(sf::Vector2f(pos.x, pos.y));
 						cell.setFillColor(config.selectColor);
 						
 						window.draw(cell);
 						window.display();
 					}
 					else {
-						sf::RectangleShape cell(sf::Vector2f(config.gridWidth, config.gridHeight));//Это не "чё за тупой код?" это оптимизация
-						cell.setPosition(pos);
+						sf::RectangleShape grid(sf::Vector2f(config.gridWidth, config.gridHeight));
+						grid.setPosition(sf::Vector2f(pos.x, pos.y));
+						grid.setFillColor(config.gridColor);
+
+						window.draw(grid);
+
+						sf::RectangleShape cell(sf::Vector2f(config.gridWidth - 2, config.gridHeight - 2));//Это не "чё за тупой код?" это оптимизация
+						cell.setPosition(sf::Vector2f(pos.x + 1, pos.y + 1));
 						cell.setFillColor(config.backgroundColor);
 
 						window.draw(cell);
@@ -179,6 +201,7 @@ int main() {
 					for (auto a : selectedChecks) {
 						std::cout << a.x << ' ' << a.y << std::endl;
 					}
+					std::cout << std::endl;
 				}
 			}
 		}

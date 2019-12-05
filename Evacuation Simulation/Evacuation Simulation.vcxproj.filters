@@ -21,9 +21,15 @@
     <ClCompile Include="Grath.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="levelDisigner.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Grath.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="levelDisigner.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,58 +1,99 @@
 ﻿  Main.cpp
-C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\Main.cpp(41,46): warning C4244:  аргумент: преобразование "const int32_t" в "T", возможна потеря данных
-C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\Main.cpp(41,46): warning C4244:         with
-C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\Main.cpp(41,46): warning C4244:         [
-C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\Main.cpp(41,46): warning C4244:             T=float
-C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\Main.cpp(41,46): warning C4244:         ]
-C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\Main.cpp(42,51): warning C4244:  аргумент: преобразование "const int32_t" в "T", возможна потеря данных
-C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\Main.cpp(42,51): warning C4244:         with
-C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\Main.cpp(42,51): warning C4244:         [
-C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\Main.cpp(42,51): warning C4244:             T=float
-C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\Main.cpp(42,51): warning C4244:         ]
-C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\Main.cpp(43,65): warning C4244:  аргумент: преобразование "const int32_t" в "T", возможна потеря данных
-C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\Main.cpp(43,65): warning C4244:         with
-C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\Main.cpp(43,65): warning C4244:         [
-C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\Main.cpp(43,65): warning C4244:             T=float
-C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\Main.cpp(43,65): warning C4244:         ]
-C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\Main.cpp(43,51): warning C4244:  аргумент: преобразование "const int32_t" в "T", возможна потеря данных
-C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\Main.cpp(43,51): warning C4244:         with
-C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\Main.cpp(43,51): warning C4244:         [
-C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\Main.cpp(43,51): warning C4244:             T=float
-C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\Main.cpp(43,51): warning C4244:         ]
-C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\Main.cpp(50,35): warning C4244:  аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\Main.cpp(53,40): warning C4244:  аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\Main.cpp(55,40): warning C4244:  аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\Main.cpp(60,38): warning C4244:  аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\Main.cpp(63,43): warning C4244:  аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\Main.cpp(65,43): warning C4244:  аргумент: преобразование "int" в "float", возможна потеря данных
-C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\Main.cpp(106,28): warning C4244:  аргумент: преобразование "double" в "T", возможна потеря данных
-C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\Main.cpp(106,28): warning C4244:         with
-C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\Main.cpp(106,28): warning C4244:         [
-C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\Main.cpp(106,28): warning C4244:             T=float
-C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\Main.cpp(106,28): warning C4244:         ]
-C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\Main.cpp(106,22): warning C4244:  аргумент: преобразование "double" в "T", возможна потеря данных
-C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\Main.cpp(106,22): warning C4244:         with
-C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\Main.cpp(106,22): warning C4244:         [
-C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\Main.cpp(106,22): warning C4244:             T=float
-C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\Main.cpp(106,22): warning C4244:         ]
-C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\Main.cpp(164,53): warning C4244:  аргумент: преобразование "uint32_t" в "T", возможна потеря данных
-C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\Main.cpp(164,53): warning C4244:         with
-C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\Main.cpp(164,53): warning C4244:         [
-C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\Main.cpp(164,53): warning C4244:             T=float
-C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\Main.cpp(164,53): warning C4244:         ]
-C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\Main.cpp(164,49): warning C4244:  аргумент: преобразование "uint32_t" в "T", возможна потеря данных
-C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\Main.cpp(164,49): warning C4244:         with
-C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\Main.cpp(164,49): warning C4244:         [
-C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\Main.cpp(164,49): warning C4244:             T=float
-C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\Main.cpp(164,49): warning C4244:         ]
-C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\Main.cpp(193,84): warning C4244:  аргумент: преобразование "int" в "T", возможна потеря данных
-C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\Main.cpp(193,84): warning C4244:         with
-C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\Main.cpp(193,84): warning C4244:         [
-C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\Main.cpp(193,84): warning C4244:             T=float
-C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\Main.cpp(193,84): warning C4244:         ]
-C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\Main.cpp(193,61): warning C4244:  аргумент: преобразование "int" в "T", возможна потеря данных
-C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\Main.cpp(193,61): warning C4244:         with
-C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\Main.cpp(193,61): warning C4244:         [
-C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\Main.cpp(193,61): warning C4244:             T=float
-C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\Main.cpp(193,61): warning C4244:         ]
-  Evacuation Simulation.vcxproj -> C:\Users\Максим\source\repos\Evacuation Simulation\Debug\Evacuation Simulation.exe
+C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\levelDisigner.h(38,41): warning C4244:  аргумент: преобразование "int32_t" в "T", возможна потеря данных
+C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\levelDisigner.h(38,41): warning C4244:         with
+C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\levelDisigner.h(38,41): warning C4244:         [
+C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\levelDisigner.h(38,41): warning C4244:             T=float
+C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\levelDisigner.h(38,41): warning C4244:         ]
+C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\levelDisigner.h(39,46): warning C4244:  аргумент: преобразование "int32_t" в "T", возможна потеря данных
+C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\levelDisigner.h(39,46): warning C4244:         with
+C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\levelDisigner.h(39,46): warning C4244:         [
+C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\levelDisigner.h(39,46): warning C4244:             T=float
+C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\levelDisigner.h(39,46): warning C4244:         ]
+C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\levelDisigner.h(40,59): warning C4244:  аргумент: преобразование "int32_t" в "T", возможна потеря данных
+C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\levelDisigner.h(40,59): warning C4244:         with
+C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\levelDisigner.h(40,59): warning C4244:         [
+C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\levelDisigner.h(40,59): warning C4244:             T=float
+C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\levelDisigner.h(40,59): warning C4244:         ]
+C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\levelDisigner.h(40,46): warning C4244:  аргумент: преобразование "int32_t" в "T", возможна потеря данных
+C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\levelDisigner.h(40,46): warning C4244:         with
+C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\levelDisigner.h(40,46): warning C4244:         [
+C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\levelDisigner.h(40,46): warning C4244:             T=float
+C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\levelDisigner.h(40,46): warning C4244:         ]
+C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\levelDisigner.h(47,29): warning C4244:  аргумент: преобразование "int" в "float", возможна потеря данных
+C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\levelDisigner.h(50,34): warning C4244:  аргумент: преобразование "int" в "float", возможна потеря данных
+C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\levelDisigner.h(52,34): warning C4244:  аргумент: преобразование "int" в "float", возможна потеря данных
+C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\levelDisigner.h(57,32): warning C4244:  аргумент: преобразование "int" в "float", возможна потеря данных
+C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\levelDisigner.h(60,37): warning C4244:  аргумент: преобразование "int" в "float", возможна потеря данных
+C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\levelDisigner.h(62,37): warning C4244:  аргумент: преобразование "int" в "float", возможна потеря данных
+C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\levelDisigner.h(103,29): warning C4244:  аргумент: преобразование "double" в "T", возможна потеря данных
+C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\levelDisigner.h(103,29): warning C4244:         with
+C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\levelDisigner.h(103,29): warning C4244:         [
+C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\levelDisigner.h(103,29): warning C4244:             T=float
+C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\levelDisigner.h(103,29): warning C4244:         ]
+  levelDisigner.cpp
+C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\levelDisigner.h(103,23): warning C4244:  аргумент: преобразование "double" в "T", возможна потеря данных
+C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\levelDisigner.h(103,23): warning C4244:         with
+C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\levelDisigner.h(103,23): warning C4244:         [
+C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\levelDisigner.h(103,23): warning C4244:             T=float
+C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\levelDisigner.h(103,23): warning C4244:         ]
+C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\levelDisigner.h(38,41): warning C4244:  аргумент: преобразование "int32_t" в "T", возможна потеря данных
+C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\levelDisigner.h(38,41): warning C4244:         with
+C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\levelDisigner.h(38,41): warning C4244:         [
+C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\levelDisigner.h(38,41): warning C4244:             T=float
+C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\levelDisigner.h(38,41): warning C4244:         ]
+C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\levelDisigner.h(39,46): warning C4244:  аргумент: преобразование "int32_t" в "T", возможна потеря данных
+C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\levelDisigner.h(39,46): warning C4244:         with
+C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\levelDisigner.h(39,46): warning C4244:         [
+C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\levelDisigner.h(39,46): warning C4244:             T=float
+C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\levelDisigner.h(39,46): warning C4244:         ]
+C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\levelDisigner.h(40,59): warning C4244:  аргумент: преобразование "int32_t" в "T", возможна потеря данных
+C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\levelDisigner.h(40,59): warning C4244:         with
+C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\levelDisigner.h(40,59): warning C4244:         [
+C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\levelDisigner.h(40,59): warning C4244:             T=float
+C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\levelDisigner.h(40,59): warning C4244:         ]
+C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\levelDisigner.h(40,46): warning C4244:  аргумент: преобразование "int32_t" в "T", возможна потеря данных
+C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\levelDisigner.h(40,46): warning C4244:         with
+C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\levelDisigner.h(40,46): warning C4244:         [
+C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\levelDisigner.h(40,46): warning C4244:             T=float
+C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\levelDisigner.h(40,46): warning C4244:         ]
+C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\levelDisigner.h(47,29): warning C4244:  аргумент: преобразование "int" в "float", возможна потеря данных
+C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\levelDisigner.h(50,34): warning C4244:  аргумент: преобразование "int" в "float", возможна потеря данных
+C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\levelDisigner.h(52,34): warning C4244:  аргумент: преобразование "int" в "float", возможна потеря данных
+C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\levelDisigner.h(57,32): warning C4244:  аргумент: преобразование "int" в "float", возможна потеря данных
+C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\levelDisigner.h(60,37): warning C4244:  аргумент: преобразование "int" в "float", возможна потеря данных
+C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\levelDisigner.h(62,37): warning C4244:  аргумент: преобразование "int" в "float", возможна потеря данных
+C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\levelDisigner.h(103,29): warning C4244:  аргумент: преобразование "double" в "T", возможна потеря данных
+C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\levelDisigner.h(103,29): warning C4244:         with
+C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\levelDisigner.h(103,29): warning C4244:         [
+C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\levelDisigner.h(103,29): warning C4244:             T=float
+C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\levelDisigner.h(103,29): warning C4244:         ]
+C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\levelDisigner.h(103,23): warning C4244:  аргумент: преобразование "double" в "T", возможна потеря данных
+C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\levelDisigner.h(103,23): warning C4244:         with
+C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\levelDisigner.h(103,23): warning C4244:         [
+C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\levelDisigner.h(103,23): warning C4244:             T=float
+C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\levelDisigner.h(103,23): warning C4244:         ]
+C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\levelDisigner.cpp(34,53): warning C4244:  аргумент: преобразование "uint32_t" в "T", возможна потеря данных
+C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\levelDisigner.cpp(34,53): warning C4244:         with
+C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\levelDisigner.cpp(34,53): warning C4244:         [
+C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\levelDisigner.cpp(34,53): warning C4244:             T=float
+C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\levelDisigner.cpp(34,53): warning C4244:         ]
+C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\levelDisigner.cpp(34,49): warning C4244:  аргумент: преобразование "uint32_t" в "T", возможна потеря данных
+C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\levelDisigner.cpp(34,49): warning C4244:         with
+C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\levelDisigner.cpp(34,49): warning C4244:         [
+C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\levelDisigner.cpp(34,49): warning C4244:             T=float
+C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\levelDisigner.cpp(34,49): warning C4244:         ]
+C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\levelDisigner.cpp(63,70): warning C4244:  аргумент: преобразование "int" в "T", возможна потеря данных
+C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\levelDisigner.cpp(63,70): warning C4244:         with
+C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\levelDisigner.cpp(63,70): warning C4244:         [
+C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\levelDisigner.cpp(63,70): warning C4244:             T=float
+C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\levelDisigner.cpp(63,70): warning C4244:         ]
+C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\levelDisigner.cpp(63,54): warning C4244:  аргумент: преобразование "int" в "T", возможна потеря данных
+C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\levelDisigner.cpp(63,54): warning C4244:         with
+C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\levelDisigner.cpp(63,54): warning C4244:         [
+C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\levelDisigner.cpp(63,54): warning C4244:             T=float
+C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\levelDisigner.cpp(63,54): warning C4244:         ]
+C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\levelDisigner.cpp(83,15): error C2512:  std::basic_ostream<char,std::char_traits<char>>: нет подходящего конструктора по умолчанию
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.22.27905\include\iosfwd(216,23): message :   см. объявление "std::basic_ostream<char,std::char_traits<char>>"
+C:\Users\Максим\source\repos\Evacuation Simulation\Evacuation Simulation\levelDisigner.cpp(84,11): error C2039:  open: не является членом "std::basic_ostream<char,std::char_traits<char>>"
+  Создание кода...
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Professional\VC\Tools\MSVC\14.22.27905\include\iosfwd(216): message :   см. объявление "std::basic_ostream<char,std::char_traits<char>>"

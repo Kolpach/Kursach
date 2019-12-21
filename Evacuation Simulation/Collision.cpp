@@ -1,7 +1,6 @@
 #include "Collision.h"
-
 //колизия по принципу obb
-bool collision(const hateYouRectangle::Shapes& one, const hateYouRectangle::Shapes& two) {
+bool BroadPhase::narrowCollision(const hateYouRectangle::Shapes& one, const hateYouRectangle::Shapes& two) {
 	if (one.points.size() < 2 && two.points.size() < 2)
 		throw "unpredictable count of points in rectangle";
 	//проверка сторон первого многоугольника на разделяющую ось
@@ -63,4 +62,25 @@ bool collision(const hateYouRectangle::Shapes& one, const hateYouRectangle::Shap
 			return false;
 	}
 	return true;//Если не нашлось ни одной разделяющей оси
+}
+//смотрим на пересечение двух промежутков
+bool BroadPhase::intersect(projections a, projections b)
+{
+	if (a.X.second < b.X.first || a.X.first < b.X.second)
+		return false;
+	if (a.Y.second < b.Y.first || a.Y.first < b.Y.second)
+		return false;
+	return true;
+}
+
+std::pair<int16_t, int16_t> BroadPhase::checkCollision()
+{
+	for (projections locM : movableObjects) {
+		for (projections locC : constObjects) {
+			if (intersect(locM, locC)) {
+				if (narrowCollision(*(locM.owner->getColliderAndSprite()), *(locC.owner->getColliderAndSprite())))
+					return std::pair<int16_t, int16_t>(locM.owner->getId(), locM.owner->getId());
+			}
+		}
+	}
 }

@@ -22,8 +22,8 @@ private:
 	sf::Color backgroundColor;
 	sf::Color selectColor;
 	
-	std::map < sf::Vector2i, std::vector<int16_t> > objectsInChunk;
 	std::map <int16_t, mapObject*> objectStorage;
+	std::vector<std::pair<sf::Vector2i, sf::Vector2i>> akaGraph;
 
 	void changeConfig();
 
@@ -32,6 +32,8 @@ private:
 	void drawCells();
 
 	void drawObjects();
+
+	void drawArrows();
 
 	template<class iterType, class vecValue> iterType findInVector(iterType begin, iterType end, const vecValue value);
 

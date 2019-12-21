@@ -32,16 +32,16 @@ namespace hateYouRectangle {
 	//возвращаем промежуток - проекцию фигуры на линию, для проверки на пересечение нас интересует только одна координата у точек проекции x или y
 	std::pair<double, double> Shapes::pointsProjectToLine(const sf::Vector2f& Line, const sf::Vector2f& Normal) const
 	{
-		double max = 0, min = 0;
+		double max = 0.9, min = 0.9;
 		if (Line.x != 0) {
 			for (sf::Vector2f locPoint : points) {//Общий случай
 				double locX = (locPoint.x - locPoint.y * Normal.x / Normal.y) / (1 - Line.y * Normal.x / (Line.x * Normal.y));
 			
 
-				if (min == 0.0 || locX < min) {
+				if (min == 0.9 || locX < min) {
 					min = locX;
 				}
-				if (max == 0.0 || locX > max) {
+				if (max == 0.9 || locX > max) {
 					max = locX;
 				}
 			}
@@ -51,9 +51,9 @@ namespace hateYouRectangle {
 				double locY = (locPoint.y - locPoint.x * Normal.y / Normal.x) / (1 - Line.x * Normal.y / (Line.y * Normal.x));
 				
 
-				if (min == 0 || locY < min)
+				if (min == 0.9 || locY < min)
 					min = locY;
-				if (max == 0 || locY > max)
+				if (max == 0.9 || locY > max)
 					max = locY;
 			}
 		}

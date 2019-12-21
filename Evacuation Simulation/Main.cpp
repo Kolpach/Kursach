@@ -4,6 +4,7 @@
 #include <vector>
 #include <map>
 #include <cmath>
+#include "mapObject.h"
 #include "levelDisigner.h"
 
 

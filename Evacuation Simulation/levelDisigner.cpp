@@ -55,7 +55,7 @@ inline void levelDisigner::drawGrid() {//Функция рисует решётку
 inline void levelDisigner::drawCells() {//закрашивает клетку
 	if (selectedChecks.size() != 0) {
 		sf::RectangleShape cell(sf::Vector2f(gridWidth, gridHeight));
-		for (sf::Vector2f pos : selectedChecks) {
+		for (sf::Vector2i pos : selectedChecks) {
 			cell.setPosition(sf::Vector2f(pos.x * gridWidth + centerX, pos.y * gridHeight + centerY));
 			cell.setFillColor(selectColor);
 			window.draw(cell);
@@ -65,23 +65,38 @@ inline void levelDisigner::drawCells() {//закрашивает клетку
 	}
 }
 
-inline std::vector<sf::Vector2f>::const_iterator levelDisigner::findInVector(const std::vector<sf::Vector2f>& vec, const sf::Vector2f value) {//поиск в векторе
-	for (std::vector<sf::Vector2f>::const_iterator i = vec.begin(); i != vec.end(); ++i) {
+void levelDisigner::drawObjects()//рисует все обьекты в objectStorage
+{
+	for (auto a : objectStorage) {
+		sf::ConvexShape local = a.second->getColliderAndSpritre()->getShape();
+		for (size_t i = 0; i < local.getPointCount(); ++i) { // в objectStorage хранятся относительные координаты, поэтому преобразовываем их в реальные
+			sf::Vector2f point = local.getPoint(i);
+			local.setPoint(i, sf::Vector2f(point.x * gridWidth + centerX, point.y * gridHeight + centerY));
+		}
+		window.draw(local);
+	}
+	window.display();
+}
+
+template<class iterType, class vecValue>
+inline iterType levelDisigner::findInVector(iterType begin, iterType end, const vecValue value)//шаблонная функция для поиска в векторе
+{
+	for (iterType i = begin; i != end; ++i) {
 		if (*i == value)
 			return i;
 	}
-	return vec.end();
+	return end;
 }
 
 inline sf::Vector2f levelDisigner::getPositionOnGrid(double x, double y) {//устанавливает позицию, полученную от клика, в левый верхний левый угол
-	double deltaX = (x - centerX) / abs(x - centerX);
+	double deltaX = (x - centerX) / abs(x - centerX);//может быть -1 при расположении левее относ. центра, и 1 при расположении правее относ. центра
 	double posX = centerX;
 	while (deltaX * (posX - centerX) < deltaX * (x - centerX)) {
 		posX += gridWidth * deltaX;
 	}
 	posX -= deltaX > 0 ? gridWidth : 0;
 
-	double deltaY = (y - centerY) / abs(y - centerY);
+	double deltaY = (y - centerY) / abs(y - centerY);//может быть -1 при расположении выше относ. центра, и 1 при расположении ниже относ. центра
 	double posY = centerY;
 	while (deltaY * (posY - centerY) < deltaY * (y - centerY)) {
 		posY += gridHeight * deltaY;
@@ -91,8 +106,8 @@ inline sf::Vector2f levelDisigner::getPositionOnGrid(double x, double y) {//уста
 }
 
 inline bool levelDisigner::selectCheck(const sf::Vector2f& position) {// Функция меняет значение клетки и возвращает результат
-	sf::Vector2f pos = sf::Vector2f((position.x - centerX) / gridWidth, (position.y - centerY) / gridHeight);//Внутри вектора хранятся не реальные координаты, а кординаты относительно центра
-	std::vector<sf::Vector2f>::const_iterator a = findInVector(selectedChecks, pos);//поиск в векторе
+	sf::Vector2i pos = sf::Vector2i((position.x - centerX) / gridWidth, (position.y - centerY) / gridHeight);//Внутри вектора хранятся не реальные координаты, а кординаты относительно центра
+	std::vector<sf::Vector2i>::const_iterator a = findInVector(selectedChecks.begin(), selectedChecks.end(), pos);//поиск в векторе
 	if (a != selectedChecks.end()) {
 		selectedChecks.erase(a);
 		return false;
@@ -103,6 +118,17 @@ inline bool levelDisigner::selectCheck(const sf::Vector2f& position) {// Функция
 	}
 }
 
+void levelDisigner::addObject(mapObject* object)//добавить обьект
+{
+	objectStorage.emplace(object->getId(), object);
+}
+
+void levelDisigner::deleteObject(const int16_t key)//удалить обьект
+{
+	delete objectStorage[key];
+	objectStorage.erase(key);
+}
+
 void levelDisigner::start()
 {
 	drawGrid();
@@ -111,7 +137,7 @@ void levelDisigner::start()
 		sf::Event eve;
 		while (window.pollEvent(eve))
 		{
-			if (eve.type == sf::Event::Resized) {
+			if (eve.type == sf::Event::Resized) {//изменение размера
 				uint32_t dy = eve.size.height;
 				uint32_t dx = eve.size.width;
 				bool needToBeChanged = false;
@@ -132,9 +158,9 @@ void levelDisigner::start()
 				drawGrid();
 				drawCells();
 			}
-			if (eve.type == sf::Event::Closed)
+			if (eve.type == sf::Event::Closed)//закрытие окна
 				window.close();
-			if (eve.type == sf::Event::MouseButtonPressed)
+			if (eve.type == sf::Event::MouseButtonPressed)//клик мыши
 			{
 				if (eve.mouseButton.button == sf::Mouse::Left)//активируем и деактивируем клетку
 				{
@@ -149,17 +175,17 @@ void levelDisigner::start()
 						window.display();
 					}
 					else {
-						sf::RectangleShape grid(sf::Vector2f(gridWidth, gridHeight));
-						grid.setPosition(sf::Vector2f(pos.x, pos.y));
+						sf::RectangleShape grid(sf::Vector2f(gridWidth, gridHeight));//закрашиваем обратно один квадрат, вместо перерисовки всего окна
+						grid.setPosition(sf::Vector2f(pos.x, pos.y));//рисуем решётку, вокруг клетки
 						grid.setFillColor(gridColor);
 
 						window.draw(grid);
 
-						sf::RectangleShape cell(sf::Vector2f(gridWidth - 2, gridHeight - 2));//Это не "чё за тупой код?" это оптимизация
+						sf::RectangleShape cell(sf::Vector2f(gridWidth - 2, gridHeight - 2));
 						cell.setPosition(sf::Vector2f(pos.x + 1, pos.y + 1));
 						cell.setFillColor(backgroundColor);
 
-						window.draw(cell);
+						window.draw(cell);//рисуем клетку
 						window.display();
 					}
 
@@ -169,13 +195,58 @@ void levelDisigner::start()
 					std::cout << std::endl;
 				}
 			}
+			if (eve.type == sf::Event::KeyPressed) {//реакция на нажатия клавиш
+				if (eve.key.code == sf::Keyboard::W) {
+					wall* local = nullptr;
+					if (selectedChecks.size() > 1) {
+						sf::Vector2i pos1 = selectedChecks[0];
+						sf::Vector2i pos2 = selectedChecks[1];
+						float minX, maxX, minY, maxY;
+						if (pos1.x > pos2.x) {
+							minX = pos2.x;
+							maxX = pos1.x;
+						}
+						else {
+							minX = pos1.x;
+							maxX = pos2.x;
+						}
+						if (pos1.y > pos2.y) {
+							minY = pos2.y;
+							maxY = pos1.y;
+						}
+						else {
+							minY = pos1.y;
+							maxY = pos2.y;
+						}
+						minX = minX;
+						maxX = maxX + 1;
+						minY = minY;
+						maxY = maxY + 1;
+						std::vector<sf::Vector2f> points;
+						points.push_back(sf::Vector2f(minX, minY));
+						points.push_back(sf::Vector2f(maxX, minY));
+						points.push_back(sf::Vector2f(maxX, maxY));
+						points.push_back(sf::Vector2f(minX, maxY));
+						
+						local = new wall(points);
+						addObject(local);
+					}
+					selectedChecks.clear();
+					drawGrid();
+					drawObjects();
+				}
+				if (eve.key.code == sf::Keyboard::D)
+				{
+					drawObjects();
+				}
+			}
 		}
 	}
 }
 
 levelDisigner::~levelDisigner()
 {
-	/*std::ofstream file;
-	file.open("123", std::ios::binary);
-	file.write(selectedChecks,)*/
+	for (auto a : objectStorage) {
+		deleteObject(a.first);
+	}
 }

@@ -1,4 +1,5 @@
 #pragma once
+#include "mapObject.h"
 class levelDisigner
 {
 private:
@@ -10,7 +11,7 @@ private:
 	int16_t gridHeight;
 	int16_t max_count_of_cells;
 
-	std::vector<sf::Vector2f> selectedChecks;//Внутри вектора хранятся не реальные координаты, а кординаты относительно центра
+	std::vector<sf::Vector2i> selectedChecks;//Внутри вектора хранятся не реальные координаты, а кординаты относительно центра
 
 
 	sf::ContextSettings settings;
@@ -21,13 +22,18 @@ private:
 	sf::Color backgroundColor;
 	sf::Color selectColor;
 	
+	std::map < sf::Vector2i, std::vector<int16_t> > objectsInChunk;
+	std::map <int16_t, mapObject*> objectStorage;
+
 	void changeConfig();
 
 	void drawGrid();
 
 	void drawCells();
 
-	std::vector<sf::Vector2f>::const_iterator findInVector(const std::vector<sf::Vector2f>& vec, const sf::Vector2f value);
+	void drawObjects();
+
+	template<class iterType, class vecValue> iterType findInVector(iterType begin, iterType end, const vecValue value);
 
 	sf::Vector2f getPositionOnGrid(double x, double y);
 
@@ -37,9 +43,9 @@ private:
 	
 	void loadToFile();
 
-	void buildWall();
+	void addObject(mapObject* object);
 
-	void deleteWall();
+	void deleteObject(const int16_t key);
 
 
 public:
@@ -54,3 +60,4 @@ public:
 	void start();
 	~levelDisigner();
 };
+

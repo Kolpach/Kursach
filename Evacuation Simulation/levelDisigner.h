@@ -21,6 +21,7 @@ private:
 	sf::Color gridColor;
 	sf::Color backgroundColor;
 	sf::Color selectColor;
+	sf::Color arrowColor;
 	
 	std::map <int16_t, mapObject*> objectStorage;
 	std::vector<std::pair<sf::Vector2i, sf::Vector2i>> akaGraph;
@@ -43,7 +44,7 @@ private:
 
 	void saveToFile();
 	
-	void loadToFile();
+	void loadFromFile();
 
 	void addObject(mapObject* object);
 
@@ -58,6 +59,7 @@ public:
 		backgroundColor = sf::Color((int)255, (int)222, (int)111, (int)255);
 		gridColor = sf::Color((int)34, (int)0, (int)0, (int)180);
 		selectColor = sf::Color(204, 255, 204, 255);
+		arrowColor = sf::Color(0, 150, 0, 255);
 	}
 	void start();
 	~levelDisigner();

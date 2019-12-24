@@ -5,6 +5,7 @@
 #include <map>
 #include <cmath>
 #include <fstream>
+#include <ctime>
 #include "levelDisigner.h"
 
 
@@ -59,7 +60,6 @@ inline void levelDisigner::drawCells() {//закрашивает клетку
 			cell.setPosition(sf::Vector2f(pos.x * gridWidth + centerX, pos.y * gridHeight + centerY));
 			cell.setFillColor(selectColor);
 			window.draw(cell);
-			std::cout << "draw: " << pos.x << ' ' << pos.y << std::endl;
 		}
 		window.display();
 	}
@@ -68,54 +68,46 @@ inline void levelDisigner::drawCells() {//закрашивает клетку
 void levelDisigner::drawObjects()//рисует все обьекты в objectStorage
 {
 	for (auto a : objectStorage) {
-		sf::ConvexShape local = a.second->getColliderAndSprite()->getShape();
-		if (a.second->myType == mapObject::type::wall) {
-			for (size_t i = 0; i < local.getPointCount(); ++i) { // в objectStorage хранятся относительные координаты, поэтому преобразовываем их в реальные
-				sf::Vector2f point = local.getPoint(i);
-				local.setPoint(i, sf::Vector2f(point.x * gridWidth + centerX, point.y * gridHeight + centerY));
-			}
-		}
-		else if (a.second->myType == mapObject::type::human) {
-			sf::Vector2f pos = a.second->getPosition();
-			pos.x = pos.x * gridWidth + centerX;
-			pos.y = pos.y * gridHeight + centerY;
-			for (size_t i = 0; i < local.getPointCount(); ++i) { // в objectStorage хранятся относительные координаты, поэтому преобразовываем их в реальные
-				sf::Vector2f point = local.getPoint(i);
-				local.setPoint(i, sf::Vector2f(point.x * gridWidth/2 * 2 + pos.x, point.y * gridHeight/2 * 2 + pos.y ));
-			}
-		}
-		window.draw(local);
+		window.draw(a.second->getShape());
 	}
 	window.display();
 }
 
 void levelDisigner::drawArrows()
 {
-	sf::ConvexShape drawableArrow;
+	sf::RectangleShape drawableArrow;
 	drawableArrow.setPosition(0.f, 0.f);
-	drawableArrow.setPointCount(8);
-	drawableArrow.setPoint(0, sf::Vector2f(0.f, -0.5f));
-	drawableArrow.setPoint(1, sf::Vector2f(10.f, -0.5f));
-	drawableArrow.setPoint(2, sf::Vector2f(10.f, 0.5f));
-	drawableArrow.setPoint(3, sf::Vector2f(0.f, 0.5f));
-	drawableArrow.setPoint(4, sf::Vector2f(0.f, -0.5f));
-	drawableArrow.setPoint(5, sf::Vector2f(10.f, -10.5f));
-	drawableArrow.setPoint(6, sf::Vector2f(10.f, 10.5f));
-	drawableArrow.setPoint(7, sf::Vector2f(0.f, 0.5f));
+	drawableArrow.setOrigin(0.f, 1.5);//выставляем ось вращения
+	drawableArrow.setFillColor(arrowColor);
 
-	drawableArrow.setOutlineThickness(gridWidth / 10);
+	sf::CircleShape triangle(gridWidth / 2, 3);
+	triangle.setOrigin(triangle.getRadius(), 0.f);
+	triangle.setFillColor(arrowColor);
 	for (auto arrow : akaGraph) {
 		sf::Vector2i point1 = arrow.first;
 		sf::Vector2i point2 = arrow.second;
-		drawableArrow.setPosition(point2.x * gridWidth + centerX, point2.y * gridHeight + centerY);
-		if ((point2.y - point1.y) != 0)
-			drawableArrow.rotate(-atan((point2.x - point1.x) / (point2.y - point1.y)));
-		drawableArrow.setPoint(1, sf::Vector2f((point1.x - point2.x) * gridWidth, (point1.y - point2.y) * gridWidth));
-		drawableArrow.setPoint(2, sf::Vector2f((point1.x - point2.x) * gridWidth, (point1.y - point2.y) * gridWidth));
 		
+		float length = sqrt(pow(point2.x - point1.x, 2) + pow(point2.y - point1.y, 2)) * gridWidth;//задаём длинну линии
+		drawableArrow.setSize(sf::Vector2f(length , 3.f));
+		drawableArrow.setPosition(point2.x * gridWidth + centerX, point2.y * gridHeight + centerY);
+		triangle.setPosition(point2.x * gridWidth + centerX, point2.y * gridHeight + centerY);
+
+		float additionalDeg = (point2.x - point1.x) > 0 ? 180 : 0;//сложные условия для правильного поворота
+		if ((point2.x - point1.x) == 0 && (point2.y - point1.y) != 0) {
+			drawableArrow.setRotation(90 * -(point2.y - point1.y) / abs(point2.y - point1.y));
+			triangle.setRotation(90 * -(point2.y - point1.y) / abs(point2.y - point1.y) - 90);
+		}
+		else if ((point2.y - point1.y) != 0) {
+			drawableArrow.setRotation(atan(float(point2.y - point1.y) / float(point2.x - point1.x)) * (180.f / 3.14) + additionalDeg);
+			triangle.setRotation(atan(float(point2.y - point1.y) / float(point2.x - point1.x)) * (180.f / 3.14) + additionalDeg - 90);
+		}
+		else {
+			drawableArrow.setRotation(0 + additionalDeg);
+			triangle.setRotation(0 + additionalDeg - 90);
+		}
+		window.draw(drawableArrow);
+		window.draw(triangle);
 	}
-	drawableArrow.setFillColor(sf::Color(255, 0, 0, 255));
-	window.draw(drawableArrow);
 	window.display();
 }
 
@@ -159,6 +151,83 @@ inline bool levelDisigner::selectCheck(const sf::Vector2f& position) {// Функция
 	}
 }
 
+void levelDisigner::saveToFile()
+{
+	std::string name;
+	std::cout << "Save as: ";
+	std::cin >> name;
+	std::ofstream file("saves\\" + name + ".txt");
+	file << akaGraph.size() << '\n';
+	for (std::pair<sf::Vector2i, sf::Vector2i> loc : akaGraph) {
+		file << loc.first.x << '\n';
+		file << loc.first.y << '\n';
+		file << loc.second.x << '\n';
+		file << loc.second.y << '\n';
+	}
+	for (std::pair<int16_t, mapObject*> loc : objectStorage) {
+		file << *loc.second << std::endl;
+	}
+	std::cout << "saved" << std::endl;
+}
+
+void levelDisigner::loadFromFile()
+{
+	std::string name;
+	std::cout << "File name: ";
+	std::cin >> name;
+	std::ifstream file("saves\\" + name + ".txt");
+	objectStorage.clear();
+	akaGraph.clear();
+	int size = 0;
+	file >> size;
+	if (size != 0) {
+		for (int i = 0; i < size; ++i) {
+			sf::Vector2i begin, end;
+			file >> begin.x;
+			file >> begin.y;
+			file >> end.x;
+			file >> end.y;
+			akaGraph.push_back(std::pair<sf::Vector2i, sf::Vector2i>(begin, end));
+		}
+	}
+	while (!file.eof()) {
+		int num = 0;
+		file >> num;
+		if (num == 0)
+			continue;
+		mapObject::type locType = static_cast<mapObject::type>(num);
+		switch (locType)
+		{
+		case mapObject::wall:{
+			std::vector<sf::Vector2f> EMPTY_OBJECTS_CANT_BE_CREATED;
+			wall* locObject = new wall(EMPTY_OBJECTS_CANT_BE_CREATED);
+			file >> *locObject;
+			objectStorage.emplace(locObject->getId(), locObject);
+			break;
+		}
+		case mapObject::human: {
+			human* locObject = new human(sf::Vector2f(0.f, 0.f), 2);
+			file >> *locObject;
+			objectStorage.emplace(locObject->getId(), locObject);
+			break;
+		}
+		default:
+			break;
+		}
+		file.ignore(1);
+	}
+	window.clear();
+	changeConfig();//сохраняем текущие параметры окна
+	drawGrid();//рисуем решётку
+	drawCells();//рисуем закрашенные клетки
+	for (auto a : objectStorage) {//обновляем положение объектов
+		a.second->updatePosition(centerX, centerY, gridWidth, gridHeight);
+	}
+	drawObjects();//рисуем оюъекты
+	drawArrows();//рисуем направления движения
+	std::cout << "fineshed" << std::endl;
+}
+
 void levelDisigner::addObject(mapObject* object)//добавить обьект
 {
 	objectStorage.emplace(object->getId(), object);
@@ -195,11 +264,14 @@ void levelDisigner::start()
 				}
 				window.setView(sf::View(sf::FloatRect(0, 0, dx, dy)));
 				window.clear();
-				changeConfig();
-				drawGrid();
-				drawCells();
-				drawObjects();
-				drawArrows();
+				changeConfig();//сохраняем текущие параметры окна
+				drawGrid();//рисуем решётку
+				drawCells();//рисуем закрашенные клетки
+				for (auto a : objectStorage) {//обновляем положение объектов
+					a.second->updatePosition(centerX, centerY, gridWidth, gridHeight);
+				}
+				drawObjects();//рисуем оюъекты
+				drawArrows();//рисуем направления движения
 			}
 			if (eve.type == sf::Event::Closed) {//закрытие окна
 				window.close();
@@ -232,11 +304,6 @@ void levelDisigner::start()
 						window.draw(cell);//рисуем клетку
 						window.display();
 					}
-
-					for (auto a : selectedChecks) {
-						std::cout << a.x << ' ' << a.y << std::endl;
-					}
-					std::cout << std::endl;
 				}
 			}
 			if (eve.type == sf::Event::KeyPressed) {//реакция на нажатия клавиш
@@ -266,12 +333,14 @@ void levelDisigner::start()
 						minY = minY;
 						maxY = maxY + 1;
 						std::vector<sf::Vector2f> points;
-						points.push_back(sf::Vector2f(minX, minY));
-						points.push_back(sf::Vector2f(maxX, minY));
-						points.push_back(sf::Vector2f(maxX, maxY));
-						points.push_back(sf::Vector2f(minX, maxY));
+						points.push_back(sf::Vector2f(minX - minX, minY - minY));
+						points.push_back(sf::Vector2f(maxX - minX, minY - minY));
+						points.push_back(sf::Vector2f(maxX - minX, maxY - minY));
+						points.push_back(sf::Vector2f(minX - minX, maxY - minY));
 						
 						wall* local = new wall(points);
+						local->setPosition(sf::Vector2f(minX, minY));
+						local->updatePosition(centerX, centerY, gridWidth, gridHeight);
 						addObject(local);
 					}
 					selectedChecks.clear();
@@ -292,7 +361,8 @@ void levelDisigner::start()
 					if (selectedChecks.size() > 0) {
 						sf::Vector2i pos1 = selectedChecks[0];
 						float x = pos1.x, y = pos1.y;
-						human* local = new human(sf::Vector2f(x, y), 1);
+						human* local = new human(sf::Vector2f(x, y), 2);
+						local->updatePosition(centerX, centerY, gridWidth, gridHeight);
 						addObject(local);
 					}
 					selectedChecks.clear();
@@ -311,6 +381,18 @@ void levelDisigner::start()
 					drawGrid();
 					drawObjects();
 					drawArrows();
+				}
+				if (eve.key.code == sf::Keyboard::S)
+				{
+					saveToFile();
+				}
+				if (eve.key.code == sf::Keyboard::L)
+				{
+					loadFromFile();
+				}
+				if (eve.key.code == sf::Keyboard::Q)
+				{
+					window.close();
 				}
 			}
 		}

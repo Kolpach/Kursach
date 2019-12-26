@@ -24,12 +24,18 @@
     <ClCompile Include="mapObject.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="Evacuation.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="levelDisigner.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="mapObject.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Evacuation.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

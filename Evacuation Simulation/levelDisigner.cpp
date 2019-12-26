@@ -98,8 +98,8 @@ void levelDisigner::drawArrows()
 			triangle.setRotation(90 * -(point2.y - point1.y) / abs(point2.y - point1.y) - 90);
 		}
 		else if ((point2.y - point1.y) != 0) {
-			drawableArrow.setRotation(atan(float(point2.y - point1.y) / float(point2.x - point1.x)) * (180.f / 3.14) + additionalDeg);
-			triangle.setRotation(atan(float(point2.y - point1.y) / float(point2.x - point1.x)) * (180.f / 3.14) + additionalDeg - 90);
+			drawableArrow.setRotation(atan(float(point2.y - point1.y) / float(point2.x - point1.x)) * (180.f / 3.14159265) + additionalDeg);
+			triangle.setRotation(atan(float(point2.y - point1.y) / float(point2.x - point1.x)) * (180.f / 3.14159265) + additionalDeg - 90);
 		}
 		else {
 			drawableArrow.setRotation(0 + additionalDeg);

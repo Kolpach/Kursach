@@ -6,6 +6,7 @@
 #include <cmath>
 #include "mapObject.h"
 #include "levelDisigner.h"
+#include "Evacuation.h"
 
 namespace cm {
 	enum commands
@@ -34,6 +35,21 @@ int main() {
 		switch (command)
 		{
 		case cm::start: {
+			std::string name;
+			std::cout << "File name: ";
+			std::cin >> name;
+			name = "saves\\" + name + ".txt";
+			std::ifstream file(name);
+			if (file.is_open()) {
+				file.close();
+				Evacuation controller(name);
+				controller.start();
+			}
+			else {
+				std::cout << "Wrong file name" << std::endl;
+				continue;
+			}
+			
 			break;
 		}
 		case cm::levelDisigner: {

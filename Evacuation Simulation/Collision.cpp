@@ -1,19 +1,27 @@
 #include "Collision.h"
 //колизия по принципу obb
-bool BroadPhase::narrowCollision(const hateYouRectangle::Shapes& one, const hateYouRectangle::Shapes& two) {
-	if (one.points.size() < 2 && two.points.size() < 2)
+bool BroadPhase::narrowCollision(const mapObject& firstObj, const mapObject& secondObj) {
+	sf::ConvexShape one = firstObj.getShape();
+	sf::ConvexShape two = secondObj.getShape();
+	if (one.getPointCount() < 2 && two.getPointCount() < 2)
 		throw "unpredictable count of points in rectangle";
 	//проверка сторон первого многоугольника на разделяющую ось
-	for (size_t i = 0; i < one.points.size(); i++) {
+	for (size_t i = 0; i < one.getPointCount(); i++) {
 		sf::Vector2f normal;
-		if (i == one.points.size() - 1) {
-			normal = sf::Vector2f(one.points[0].x - one.points[i].x, one.points[0].y - one.points[i].y);
+		sf::Vector2f localFirstPoint;
+		sf::Vector2f localSecondPoint;
+		localFirstPoint = one.getPoint(i);
+
+		if (i == one.getPointCount() - 1) {
+			localSecondPoint = one.getPoint(0);
+			normal = sf::Vector2f(localSecondPoint.x - localFirstPoint.x, localSecondPoint.y - localFirstPoint.y);
 		}
 		else {
-			normal = sf::Vector2f(one.points[i + 1].x - one.points[i].x, one.points[i + 1].y - one.points[i].y);
+			localSecondPoint = one.getPoint(i + 1);
+			normal = sf::Vector2f(localSecondPoint.x - localFirstPoint.x, localSecondPoint.y - localFirstPoint.y);
 		}
 
-		
+
 		sf::Vector2f line;
 		if (normal.y != 0) {//общий случай
 			line.x = 1;
@@ -23,9 +31,8 @@ bool BroadPhase::narrowCollision(const hateYouRectangle::Shapes& one, const hate
 			line.x = 0;
 			line.y = 1;
 		}
-
-		std::pair<double, double> intervalCoords = one.pointsProjectToLine( line, normal);
-		std::pair<double, double> intervalCoords2 = two.pointsProjectToLine( line, normal);
+		std::pair<double, double> intervalCoords = firstObj.pointsProjectToLine(line, normal);
+		std::pair<double, double> intervalCoords2 = secondObj.pointsProjectToLine(line, normal);
 
 		if (intervalCoords.second < intervalCoords2.first)
 			return false;
@@ -33,13 +40,19 @@ bool BroadPhase::narrowCollision(const hateYouRectangle::Shapes& one, const hate
 			return false;
 	}
 	//проверка сторон второго многоугольника на разделяющую ось
-	for (size_t i = 0; i < two.points.size(); i++) {
+	for (size_t i = 0; i < two.getPointCount(); i++) {
 		sf::Vector2f normal;
-		if (i == two.points.size() - 1) {
-			normal = sf::Vector2f(two.points[0].x - two.points[i].x, two.points[0].y - two.points[i].y);
+		sf::Vector2f localFirstPoint;
+		sf::Vector2f localSecondPoint;
+		localFirstPoint = two.getPoint(i);
+
+		if (i == two.getPointCount() - 1) {
+			localSecondPoint = two.getPoint(0);
+			normal = sf::Vector2f(localSecondPoint.x - localFirstPoint.x, localSecondPoint.y - localFirstPoint.y);
 		}
 		else {
-			normal = sf::Vector2f(two.points[i + 1].x - two.points[i].x, two.points[i + 1].y - two.points[i].y);
+			localSecondPoint = two.getPoint(i + 1);
+			normal = sf::Vector2f(localSecondPoint.x - localFirstPoint.x, localSecondPoint.y - localFirstPoint.y);
 		}
 
 
@@ -53,8 +66,8 @@ bool BroadPhase::narrowCollision(const hateYouRectangle::Shapes& one, const hate
 			line.y = 1;
 		}
 
-		std::pair<double, double> intervalCoords = one.pointsProjectToLine(line, normal);
-		std::pair<double, double> intervalCoords2 = two.pointsProjectToLine(line, normal);
+		std::pair<double, double> intervalCoords = firstObj.pointsProjectToLine(line, normal);
+		std::pair<double, double> intervalCoords2 = secondObj.pointsProjectToLine(line, normal);
 
 		if (intervalCoords.second < intervalCoords2.first)
 			return false;
@@ -63,24 +76,53 @@ bool BroadPhase::narrowCollision(const hateYouRectangle::Shapes& one, const hate
 	}
 	return true;//Если не нашлось ни одной разделяющей оси
 }
-//смотрим на пересечение двух промежутков
-bool BroadPhase::intersect(projections a, projections b)
+std::pair<mapObject*, mapObject*> BroadPhase::tryThisVariant(std::vector<Evacuation::projections>& constObjects, std::vector<Evacuation::projections>& movableObjects, bool alarm)
 {
-	if (a.X.second < b.X.first || a.X.first < b.X.second)
+	for (Evacuation::projections locM : movableObjects) {
+		for (Evacuation::projections locC : constObjects) {
+			if (intersect(locM, locC)) {
+				return std::pair<mapObject*, mapObject*>(locM.owner, locC.owner);//тут надо поменять возвращаемое значение
+			}
+		}
+	}
+	return std::pair<mapObject*, mapObject*>(nullptr, nullptr);
+}
+//смотрим на пересечение двух промежутков
+bool BroadPhase::intersect(const Evacuation::projections& a, const Evacuation::projections& b)
+{
+	if (a.X.second < b.X.first || a.X.first > b.X.second)
 		return false;
-	if (a.Y.second < b.Y.first || a.Y.first < b.Y.second)
+	if (a.Y.second < b.Y.first || a.Y.first > b.Y.second)
 		return false;
 	return true;
 }
 
-std::pair<int16_t, int16_t> BroadPhase::checkCollision()
+std::pair<mapObject*, mapObject*> BroadPhase::checkCollision(std::vector<Evacuation::projections>& constObjects, std::vector<Evacuation::projections>& movableObjects, bool alarm, float path, int32_t centerX, int32_t centerY, int16_t gridWidth, int16_t gridHeight)
 {
-	for (projections locM : movableObjects) {
-		for (projections locC : constObjects) {
+	std::vector<Evacuation::projections> constObjectsLoc = constObjects;
+	std::vector<Evacuation::projections> movableObjectsLoc = movableObjects;
+	//симулируем следующий фрейм
+	for (auto& obj : movableObjectsLoc) {
+		dynamic_cast<human*>(obj.owner)->move(path, gridWidth);
+		obj = projectToAxis(obj.owner, centerX, centerY, gridWidth, gridHeight);
+	}
+
+	//В этом цикле проверяем коллизии между стеной и людьми
+	for (Evacuation::projections& locM : movableObjectsLoc) {
+		sf::Vector2f direction = dynamic_cast<human*>(locM.owner)->direction;
+		for (Evacuation::projections locC : constObjectsLoc) {
 			if (intersect(locM, locC)) {
-				if (narrowCollision(*(locM.owner->getColliderAndSprite()), *(locC.owner->getColliderAndSprite())))
-					return std::pair<int16_t, int16_t>(locM.owner->getId(), locM.owner->getId());
+				//if (narrowCollision(*locM.owner, *locC.owner)) {
+				//return std::pair<mapObject*, mapObject*>(locM.owner, locC.owner);//тут надо поменять возвращаемое значение
+				//}
+				if (alarm) {
+
+				}
+				else {
+
+				}
 			}
 		}
 	}
+	return std::pair<mapObject*, mapObject*>(nullptr, nullptr);
 }

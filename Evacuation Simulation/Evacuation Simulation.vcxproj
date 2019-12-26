@@ -130,11 +130,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Evacuation.cpp" />
     <ClCompile Include="levelDisigner.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="mapObject.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Evacuation.h" />
     <ClInclude Include="levelDisigner.h" />
     <ClInclude Include="mapObject.h" />
   </ItemGroup>

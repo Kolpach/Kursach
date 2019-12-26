@@ -1,17 +1,17 @@
 #pragma once
-#include "Shapes.h"
+#include <SFML/Graphics.hpp>
+#include <SFML/OpenGL.hpp>
+#include <iostream>
+#include <vector>
+#include <map>
 #include "mapObject.h"
+#include "Evacuation.h"
 
 class BroadPhase {
-	struct projections
-	{
-		std::pair<float, float> X, Y;
-		mapObject* owner;
-	};
-	bool intersect(projections a, projections b);
-	bool narrowCollision(const hateYouRectangle::Shapes& a, const hateYouRectangle::Shapes& b);
+	
+	bool intersect(const Evacuation::projections& a, const Evacuation::projections& b);
+	bool narrowCollision(const mapObject& a, const mapObject& b);
+	std::pair<mapObject*, mapObject*> tryThisVariant(std::vector<Evacuation::projections>& constObjects, std::vector<Evacuation::projections>& movableObjects, bool alarm);
 public:
-	std::vector<projections> constObjects;
-	std::vector<projections> movableObjects;
-	std::pair<int16_t, int16_t> checkCollision();
+	std::pair<mapObject*, mapObject*> checkCollision(std::vector<Evacuation::projections>& constObjects, std::vector<Evacuation::projections>& movableObjects, bool alarm, float , int32_t centerX, int32_t centerY, int16_t gridWidth, int16_t gridHeight);//должно быть по значению
 };

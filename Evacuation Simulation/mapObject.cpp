@@ -21,6 +21,16 @@ void human::updatePosition(int32_t centerX, int32_t centerY, int16_t gridWidth, 
 		drawable.setPoint(i, pos);
 	}
 }
+void human::move(float path, int16_t gridWidth)
+{
+	position.x = position.x + direction.x * path / gridWidth;
+	position.y = position.y + direction.y * path / gridWidth;
+	size_t count = drawable.getPointCount();
+	for (size_t i = 0; i < count; ++i) {
+		sf::Vector2f curPos = drawable.getPoint(i);
+		drawable.setPoint(i, sf::Vector2f(curPos.x + direction.x * path, curPos.y + direction.y * path));
+	}
+}
 human::human(sf::Vector2f pos,  float rad) :  radius(rad)
 {
 	position = pos;
@@ -55,7 +65,7 @@ void mapObject::addPosition(float x, float y)
 	}
 }
 
-sf::ConvexShape mapObject::getShape()
+sf::ConvexShape mapObject::getShape() const
 {
 	return drawable;
 }

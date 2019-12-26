@@ -11,8 +11,8 @@ protected:
 public:
 	void setFillColor(const sf::Color & col);//-------
 	void addPosition(float x, float y);//-------
-	sf::ConvexShape getShape();//-------
-	std::pair<double, double> pointsProjectToLine(const sf::Vector2f & A, const sf::Vector2f & Normal) const;//-------
+	sf::ConvexShape getShape() const;//-------
+	std::pair<double, double> pointsProjectToLine(const sf::Vector2f& A, const sf::Vector2f& Normal) const;//-------
 
 	enum type{ wall = 1, human};
 	type myType;
@@ -38,7 +38,10 @@ private:
 	double radius;
 public:
 	double getRadius();
+	bool needToChangeDirection = true;
+	sf::Vector2f direction = sf::Vector2f(0.f, 0.f);
 	virtual void updatePosition(int32_t centerX, int32_t centerY, int16_t gridWidth, int16_t gridHeight) override;
+	void move(float, int16_t gridWidth);
 	human(sf::Vector2f position, float radius);
 	bool hero = false;
 };

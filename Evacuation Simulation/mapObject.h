@@ -36,8 +36,14 @@ class human : public mapObject
 {
 private:
 	double radius;
+	float degree = 0;
+	sf::Vector2f aim;
 public:
 	double getRadius();
+	void setAim(const sf::Vector2f& coords);
+	sf::Vector2f getAim();
+	void setRotation(float);
+	float getRotation();
 	bool needToChangeDirection = true;
 	sf::Vector2f direction = sf::Vector2f(0.f, 0.f);
 	virtual void updatePosition(int32_t centerX, int32_t centerY, int16_t gridWidth, int16_t gridHeight) override;

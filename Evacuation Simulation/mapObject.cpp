@@ -9,6 +9,14 @@ double human::getRadius()
 {
 	return radius;
 }
+void human::setAim(const sf::Vector2f& coords)
+{
+	aim = coords;
+}
+sf::Vector2f human::getAim()
+{
+	return aim;
+}
 void human::updatePosition(int32_t centerX, int32_t centerY, int16_t gridWidth, int16_t gridHeight)
 {
 	sf::Vector2f circlePos = position;
@@ -50,6 +58,16 @@ human::human(sf::Vector2f pos,  float rad) :  radius(rad)
 
 }
 
+void human::setRotation(float angle)
+{
+	degree = angle;
+}
+
+float human::getRotation()
+{
+	return degree;
+}
+
 void mapObject::setFillColor(const sf::Color& col)
 {
 	drawable.setFillColor(col);
@@ -74,7 +92,8 @@ std::pair<double, double> mapObject::pointsProjectToLine(const sf::Vector2f& Lin
 {
 	double max = 0.9, min = 0.9;
 	if (Line.x != 0) {
-		for (sf::Vector2f locPoint : points) {//ќбщий случай
+		for (size_t i = 0; i < drawable.getPointCount(); ++i) {//ќбщий случай
+			sf::Vector2f locPoint = drawable.getPoint(i);
 			double locX = (locPoint.x - locPoint.y * Normal.x / Normal.y) / (1 - Line.y * Normal.x / (Line.x * Normal.y));
 
 
@@ -84,10 +103,12 @@ std::pair<double, double> mapObject::pointsProjectToLine(const sf::Vector2f& Lin
 			if (max == 0.9 || locX > max) {
 				max = locX;
 			}
+
 		}
 	}
 	else {
-		for (sf::Vector2f locPoint : points) {//„астный случай дл€ пр€мой перпендикул€рной оси X
+		for (size_t i = 0; i < drawable.getPointCount(); ++i) {//„астный случай дл€ пр€мой перпендикул€рной оси X
+			sf::Vector2f locPoint = drawable.getPoint(i);
 			double locY = (locPoint.y - locPoint.x * Normal.y / Normal.x) / (1 - Line.x * Normal.y / (Line.y * Normal.x));
 
 

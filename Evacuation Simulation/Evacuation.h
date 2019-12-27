@@ -50,9 +50,10 @@ private:
 	void addObject(mapObject* object);
 	void deleteObject(const int16_t key);
 	Evacuation::projections projectToAxis(mapObject* object);
-	std::pair<mapObject*, mapObject*> checkCollision(float path);
-	std::pair<mapObject*, mapObject*> tryThisVariant(std::vector<Evacuation::projections>& locConstObjects, std::vector<Evacuation::projections>& locMovableObjects);
-
+	void checkCollision(float path);
+	//bool tryThisVariant(const std::vector<Evacuation::projections>& locConstObjects, const std::vector<Evacuation::projections>& locMovableObjects, const sf::Vector2f& direction, projections& object, float path);
+	void Alarm();
+	bool canBeSeen(const sf::Vector2f& one, const sf::Vector2f& two);
 	std::vector<projections> constObjects;
 	std::vector<projections> movableObjects;
 	void setDirection();

@@ -71,16 +71,6 @@ void Evacuation::drawArrows()
 	}
 }
 
-template<class iterType, class vecValue>
-inline iterType Evacuation::findInVector(iterType begin, iterType end, const vecValue value)//шаблонная функция для поиска в векторе
-{
-	for (iterType i = begin; i != end; ++i) {
-		if (*i == value)
-			return i;
-	}
-	return end;
-}
-
 void Evacuation::loadFromFile(std::string name)
 {
 	std::ifstream file(name);
@@ -180,26 +170,36 @@ void Evacuation::setDirection()
 //Каждый фрейм
 void Evacuation::eachFrame(sf::Int32 elapced)
 {
+	for (size_t i = 0; i < movableObjects.size(); ++i) {
+		sf::Vector2f pos = movableObjects[i].owner->getPosition();
+		pos.x = pos.x * gridWidth + centerX;
+		pos.y = pos.y * gridHeight + centerY;
+		if (pos.x < 0 || pos.x > window.getSize().x || pos.y < 0 || pos.y > window.getSize().y) {
+			deleteObject((movableObjects.begin() + i)->owner->getId());
+			movableObjects.erase(movableObjects.begin() + i);
+		}
+	}
 	setDirection();
-	checkCollision(0.5);//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	checkCollision(float(elapced) * gridWidth * 0.0001 * humanSpeed);//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 	
 	//двигаем объекты
 	for (auto& obj : movableObjects) {
 		if (dynamic_cast<human*>(obj.owner)->direction != sf::Vector2f(0.f, 0.f)) {
-			dynamic_cast<human*>(obj.owner)->move(0.5, gridWidth);//float(elapced) * gridWidth * 0.0001 * humanSpeed
+			dynamic_cast<human*>(obj.owner)->move(float(elapced) * gridWidth * 0.0001 * humanSpeed, gridWidth);
 			obj = projectToAxis(obj.owner);
 		}
 	}
 	window.clear();
 	drawBackground();
 	drawObjects();
+	//window.draw(border);
 	window.display();
 }
 
 void Evacuation::start()
 {
 
-	int seed = 13;
+	int seed = 15;
 	std::srand(seed);
 
 	window.clear();
@@ -223,11 +223,29 @@ void Evacuation::start()
 	}
 
 	sf::Clock timer;
+	sf::Clock alertTimer;
+	bool Alerted = false;
+	uint16_t countOfBlinks = 0;
 	while (window.isOpen())
 	{
 		sf::Time elapsed = timer.restart();
 		eachFrame(elapsed.asMilliseconds());
 		sf::Event eve;
+		if (!Alerted) {
+			if (alertTimer.getElapsedTime().asSeconds() > 3) {
+				Alarm();
+				Alerted = true;
+			}
+		}
+		/*else {
+			if (countOfBlinks < 60) {
+				border.setFillColor(sf::Color(255, 0, 0, 255));
+				++countOfBlinks;
+			}
+			if(countOfBlinks > 60) {
+				border.setFillColor(sf::Color(255, 0, 0, 0));
+			}
+		}*/
 		while (window.pollEvent(eve))
 		{
 			if (eve.type == sf::Event::Resized) {//изменение размера
@@ -396,33 +414,7 @@ bool Evacuation::narrowCollision(const mapObject& firstObj, const mapObject& sec
 	}
 	return true;//Если не нашлось ни одной разделяющей оси
 }
-//функция проверяет вариант движения по какому либо вектору для одного обьекта. false - collide, true - not collide
-/*bool Evacuation::tryThisVariant( const std::vector<Evacuation::projections>& constObjects, const std::vector<Evacuation::projections>& movableObjects, const sf::Vector2f& direction, projections& object, float path)
-{
 
-	for (Evacuation::projections locC : constObjects) {
-		if (intersect(object, locC)) {
-			if (alarm) {
-				return false;
-			}
-			else {
-				return false;
-			}
-		}
-	}
-	for (std::vector<Evacuation::projections>::const_iterator i = movableObjects.begin(); i != movableObjects.end(); ++i) {//этот цикл два раза обрабатывает каждое столкновение
-		if (intersect(object, *i) && i->owner != object.owner) {//довольно хрупкое условие
-			human locfirstObj = *(dynamic_cast<human*>(object.owner)), locSecondObj = *(dynamic_cast<human*>(i->owner));//для более тщательной проверки необходимы сдвинутые копии оригинала
-			locfirstObj.move(path, gridWidth);
-			locSecondObj.move(path, gridWidth);
-			if (narrowCollision(locfirstObj, locSecondObj)) {
-				return false;
-			}
-
-		}
-	}
-	return true;
-}*/
 //смотрим на пересечение двух промежутков
 bool Evacuation::intersect(const Evacuation::projections& a, const Evacuation::projections& b)
 {
@@ -454,15 +446,17 @@ void Evacuation::checkCollision(float path)
 				locfirstObj.move(path, gridWidth);
 				locSecondObj.move(path, gridWidth);
 				if (narrowCollision(locfirstObj, locSecondObj)) {
-					if (alarm) {//тут мы делаем временное "слипание" объектов, для того, чтобы объекты не застревали при столкновении
-						if (dynamic_cast<human*>(j->owner)->direction != sf::Vector2f(0.f, 0.f)) {
-							dynamic_cast<human*>(i->owner)->direction = dynamic_cast<human*>(j->owner)->direction;
-							dynamic_cast<human*>(i->owner)->needToChangeDirection = true;
-						}
-						else {//выбираем, что к нам прилипнет другой объект 
-							dynamic_cast<human*>(j->owner)->direction = dynamic_cast<human*>(i->owner)->direction;
-							dynamic_cast<human*>(j->owner)->needToChangeDirection = true;
-						}
+					if (alarm) {
+						sf::Vector2f pos1 = i->owner->getPosition();
+						sf::Vector2f pos2 = j->owner->getPosition();
+						float length = sqrt(pow(pos1.x - pos2.x, 2) + pow(pos1.y - pos2.y, 2));
+						sf::Vector2f dir = sf::Vector2f(pos1.x - pos2.x, pos1.y - pos2.y);
+						dir.x /= length/10;
+						dir.y /= length/10;
+						dynamic_cast<human*>(i->owner)->direction = dir;
+						dir.x *= -1;
+						dir.y *= -1;
+						dynamic_cast<human*>(j->owner)->direction = dir;
 					}
 					else {//поведение до тревоги
 						dynamic_cast<human*>(i->owner)->direction = sf::Vector2f(0.f, 0.f);
@@ -477,6 +471,8 @@ void Evacuation::checkCollision(float path)
 		}
 	}
 
+	
+
 	//В этом цикле проверяем коллизии между стеной и людьми
 	for (Evacuation::projections& locM : movableObjectsLoc) {
 		sf::Vector2f direction = dynamic_cast<human*>(locM.owner)->direction;
@@ -489,7 +485,6 @@ void Evacuation::checkCollision(float path)
 					if (alarm) {//попробуем обходить стены
 						sf::Vector2f min = abs(direction.x) < abs(direction.y) ? sf::Vector2f(direction.x / abs(direction.x), 0) : sf::Vector2f(0, direction.y / abs(direction.y));
 						dynamic_cast<human*>(locM.owner)->direction = min;
-						dynamic_cast<human*>(locM.owner)->needToChangeDirection = true;
 					}
 					else {
 						dynamic_cast<human*>(locM.owner)->direction = sf::Vector2f(0.f, 0.f);//останавливаем объект при коллизии
@@ -520,13 +515,23 @@ void Evacuation::checkCollision(float path)
 					if (narrowCollision(locfirstObj, locSecondObj)) {
 						dynamic_cast<human*>(j->owner)->direction = sf::Vector2f(0.f, 0.f);
 						dynamic_cast<human*>(i->owner)->direction = sf::Vector2f(0.f, 0.f);
-						dynamic_cast<human*>(i->owner)->needToChangeDirection = true;
-						dynamic_cast<human*>(j->owner)->needToChangeDirection = true;
 							
 					}	
 				}
 			}
+			sf::Vector2f direction = dynamic_cast<human*>(i->owner)->direction;
+			for (Evacuation::projections locC : constObjectsLoc) {
+				if (intersect(*i, locC)) {
+					human locfirstObj = *(dynamic_cast<human*>(i->owner));//для более тщательной проверки необходимы сдвинутые копии оригинала
+					wall locSecondObj = *(dynamic_cast<wall*>(locC.owner));
+					locfirstObj.move(path, gridWidth);
+					if (narrowCollision(locfirstObj, locSecondObj)) {
+						dynamic_cast<human*>(i->owner)->direction = sf::Vector2f(0.f, 0.f);
+					}
+				}
+			}
 		}
+		
 	}
 }
 //Тут начинается экшен

@@ -42,8 +42,6 @@ private:
 
 	void loadFromFile(std::string name);
 
-	template<class iterType, class vecValue> iterType findInVector(iterType begin, iterType end, const vecValue value);//Удалить если не используется в колизии
-
 	bool intersect(const Evacuation::projections& a, const Evacuation::projections& b);
 	bool narrowCollision(const mapObject& a, const mapObject& b);
 
@@ -51,13 +49,13 @@ private:
 	void deleteObject(const int16_t key);
 	Evacuation::projections projectToAxis(mapObject* object);
 	void checkCollision(float path);
-	//bool tryThisVariant(const std::vector<Evacuation::projections>& locConstObjects, const std::vector<Evacuation::projections>& locMovableObjects, const sf::Vector2f& direction, projections& object, float path);
 	void Alarm();
 	bool canBeSeen(const sf::Vector2f& one, const sf::Vector2f& two);
 	std::vector<projections> constObjects;
 	std::vector<projections> movableObjects;
 	void setDirection();
 	void eachFrame(sf::Int32);
+	sf::ConvexShape border;
 public:
 	struct projections
 	{
@@ -72,6 +70,20 @@ public:
 		backgroundColor = sf::Color((int)255, (int)222, (int)111, (int)255);
 		gridColor = sf::Color((int)34, (int)0, (int)0, (int)180);
 		arrowColor = sf::Color(0, 150, 0, 255);
+		sf::Vector2u loc = window.getSize();
+		uint32_t Wide = loc.x;
+		uint32_t Height = loc.y;
+		border.setPointCount(10);
+		border.setPoint(0, sf::Vector2f(0.f, 0.f));
+		border.setPoint(1, sf::Vector2f(Wide, 0.f));
+		border.setPoint(2, sf::Vector2f(Wide, Height));
+		border.setPoint(3, sf::Vector2f(0.f, Height));
+		border.setPoint(4, sf::Vector2f(0.f, gridHeight));
+		border.setPoint(5, sf::Vector2f(gridWidth, gridHeight));
+		border.setPoint(6, sf::Vector2f(gridWidth, Height - gridHeight));
+		border.setPoint(7, sf::Vector2f(Wide - gridWidth, Height - gridHeight));
+		border.setPoint(8, sf::Vector2f(Wide - gridWidth, gridHeight));
+		border.setPoint(9, sf::Vector2f(0.f, gridHeight));
 	}
 	void start();
 	~Evacuation();
